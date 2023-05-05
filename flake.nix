@@ -10,7 +10,14 @@
         name = "sqlx-cli";
         tag = "latest";
         created = "now";
-        config = { Entrypoint = [ "${pkgs.sqlx-cli}/bin/sqlx" ]; };
+
+        copyToRoot = pkgs.buildEnv {
+          name = "image-root";
+          paths = [ pkgs.bash pkgs.sqlx-cli ];
+          pathsToLink = [ "/bin" ];
+        };
+
+        config = { Cmd = [ "/bin/sqlx" ]; };
       };
 
     };
